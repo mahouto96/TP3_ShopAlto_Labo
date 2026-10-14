@@ -1,0 +1,9 @@
+global:
+  resolve_timeout: 1m
+route:
+  receiver: 'local-lab'
+  group_wait: 5s
+  group_interval: 20s
+  repeat_interval: 5m
+receivers:
+  - name: 'local-lab'

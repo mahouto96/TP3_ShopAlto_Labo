@@ -1,0 +1,31 @@
+groups:
+  - name: shopalto
+    rules:
+      - alert: ShopAltoHTTPUnavailable
+        expr: probe_success{job="blackbox-shopalto",instance="http://haproxy/catalog"} == 0
+        for: 20s
+        labels:
+          severity: critical
+        annotations:
+          summary: 'ShopAlto catalogue indisponible'
+      - alert: ShopAltoDatabaseNotReady
+        expr: probe_success{job="blackbox-shopalto",instance="http://haproxy/ready"} == 0
+        for: 20s
+        labels:
+          severity: critical
+        annotations:
+          summary: 'API non prête / base inaccessible'
+      - alert: WebNodeDown
+        expr: probe_success{job="blackbox-web"} == 0
+        for: 20s
+        labels:
+          severity: warning
+        annotations:
+          summary: 'Noeud web indisponible : {{ $labels.instance }}'
+      - alert: PostgresExporterDown
+        expr: up{job="postgres"} == 0
+        for: 20s
+        labels:
+          severity: warning
+        annotations:
+          summary: 'Exportateur PostgreSQL indisponible'
